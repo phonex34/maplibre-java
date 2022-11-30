@@ -28,10 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-import okhttp3.EventListener;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,8 +85,8 @@ public abstract class MapboxDirections extends
   private Call<DirectionsResponse> get() {
     return getService().getCall(
       ApiCallHelper.getHeaderUserAgent(clientAppName()),
-      user(),
-      profile(),
+//      user(),
+//      profile(),
       FormatUtils.formatCoordinates(coordinates()),
       accessToken(),
       alternatives(),
@@ -119,8 +118,8 @@ public abstract class MapboxDirections extends
   private Call<DirectionsResponse> post() {
     return getService().postCall(
       ApiCallHelper.getHeaderUserAgent(clientAppName()),
-      user(),
-      profile(),
+//      user(),
+//      profile(),
       FormatUtils.formatCoordinates(coordinates()),
       accessToken(),
       alternatives(),
@@ -198,7 +197,27 @@ public abstract class MapboxDirections extends
   @Override
   protected synchronized OkHttpClient getOkHttpClient() {
     if (okHttpClient == null) {
-      OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+      ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+              .supportsTlsExtensions(true)
+              .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+              .cipherSuites(
+                      CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                      CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                      CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                      CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                      CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                      CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                      CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                      CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                      CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                      CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                      CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                      CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+              .build();
+      OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+              .connectTimeout(30, TimeUnit.SECONDS)
+              .writeTimeout(30, TimeUnit.SECONDS)
+              .readTimeout(30, TimeUnit.SECONDS);
       if (isEnableDebug()) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);

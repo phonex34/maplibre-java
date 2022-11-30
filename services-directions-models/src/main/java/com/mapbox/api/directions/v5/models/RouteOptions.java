@@ -353,7 +353,7 @@ public abstract class RouteOptions extends DirectionsJsonObject {
    * @since 3.0.0
    */
   @SerializedName("uuid")
-  @NonNull
+  @Nullable
   public abstract String requestUuid();
 
   /**
@@ -873,7 +873,7 @@ public abstract class RouteOptions extends DirectionsJsonObject {
      * @return this builder for chaining options together
      * @since 3.0.0
      */
-    public abstract Builder requestUuid(@NonNull String requestUuid);
+    public abstract Builder requestUuid(@Nullable String requestUuid);
 
     /**
      * Exclude certain road types from routing. The default is to not exclude anything from the

@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.directions.v5.models.RouteEvent;
 import com.mapbox.api.directions.v5.models.RouteLeg;
 import com.mapbox.api.directions.v5.models.RouteOptions;
 
@@ -104,6 +105,18 @@ public abstract class MapMatchingMatching implements Serializable {
   public abstract RouteOptions routeOptions();
 
   /**
+   * Holds onto the parameter information used when making the directions request. Useful for
+   * re-requesting a directions route using the same information previously used.
+   *
+   * @return a {@link RouteEvent}s object which holds onto critical information from the request
+   *   that cannot be derived directly from the directions route
+   * @since 3.0.0
+   */
+  @Nullable
+  @SerializedName("events")
+  public abstract List<RouteEvent> events();
+
+  /**
    * String of the language to be used for voice instructions.  Defaults to en, and
    * can be any accepted instruction language.  Will be <tt>null</tt> when the language provided
    * via {@link com.mapbox.api.matching.v5.MapboxMapMatching#language()} is not compatible
@@ -143,6 +156,7 @@ public abstract class MapMatchingMatching implements Serializable {
       .distance(distance())
       .routeOptions(routeOptions())
       .voiceLanguage(voiceLanguage())
+      .events(events())
       .build();
   }
 
@@ -252,6 +266,7 @@ public abstract class MapMatchingMatching implements Serializable {
      */
     public abstract Builder voiceLanguage(@Nullable String voiceLanguage);
 
+    public abstract Builder events(List<RouteEvent> events);
     /**
      * Build a new {@link MapMatchingMatching} object.
      *

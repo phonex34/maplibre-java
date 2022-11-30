@@ -111,6 +111,16 @@ public abstract class DirectionsRoute extends DirectionsJsonObject {
   @Nullable
   public abstract List<RouteLeg> legs();
 
+
+  /**
+   * A Leg is a route between only two waypoints.
+   *
+   * @return list of {@link RouteLeg} objects
+   * @since 1.0.0
+   */
+  @Nullable
+  @SerializedName("events")
+  public abstract List<RouteEvent> events();
   /**
    * Holds onto the parameter information used when making the directions request. Useful for
    * re-requesting a directions route using the same information previously used.
@@ -267,6 +277,8 @@ public abstract class DirectionsRoute extends DirectionsJsonObject {
      * @since 3.1.0
      */
     public abstract Builder voiceLanguage(@Nullable String voiceLanguage);
+
+    public abstract Builder events(@Nullable  List<RouteEvent> events);
 
     abstract Builder routeIndex(String routeIndex);
 

@@ -23,8 +23,8 @@ public interface DirectionsService {
    * {@link MapboxDirections.Builder}.
    *
    * @param userAgent           the user agent
-   * @param user                the user
-   * @param profile             the profile directions should use
+//   * @param user                the user
+//   * @param profile             the profile directions should use
    * @param coordinates         the coordinates the route should follow
    * @param accessToken         Mapbox access token
    * @param alternatives        define whether you want to receive more then one route
@@ -64,11 +64,11 @@ public interface DirectionsService {
    * @return the {@link DirectionsResponse} in a Call wrapper
    * @since 1.0.0
    */
-  @GET("directions/v5/{user}/{profile}/{coordinates}")
+  @GET("v1/driving/{coordinates}")
   Call<DirectionsResponse> getCall(
     @Header("User-Agent") String userAgent,
-    @Path("user") String user,
-    @Path("profile") String profile,
+//    @Path("user") String user,
+//    @Path("profile") String profile,
     @Path("coordinates") String coordinates,
     @Query("access_token") String accessToken,
     @Query("alternatives") Boolean alternatives,
@@ -101,8 +101,8 @@ public interface DirectionsService {
    * {@link MapboxDirections.Builder}.
    *
    * @param userAgent           the user agent
-   * @param user                the user
-   * @param profile             the profile directions should use
+//   * @param user                the user
+//   * @param profile             the profile directions should use
    * @param coordinates         the coordinates the route should follow
    * @param accessToken         Mapbox access token
    * @param alternatives        define whether you want to receive more then one route
@@ -143,11 +143,11 @@ public interface DirectionsService {
    * @since 4.6.0
    */
   @FormUrlEncoded
-  @POST("directions/v5/{user}/{profile}")
+  @POST("v1/driving/")
   Call<DirectionsResponse> postCall(
     @Header("User-Agent") String userAgent,
-    @Path("user") String user,
-    @Path("profile") String profile,
+//    @Path("user") String user,
+//    @Path("profile") String profile,
     @Field("coordinates") String coordinates,
     @Query("access_token") String accessToken,
     @Field("alternatives") Boolean alternatives,
